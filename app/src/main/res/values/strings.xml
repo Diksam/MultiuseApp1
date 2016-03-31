@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">MultiuseApp1</string>
+    <string name="title_activity_notepad">NotepadActivity</string>
+    <string name="title_activity_drawing">DrawingActivity</string>
+    <string name="title_activity_movie">MovieActivity</string>
+    <string name="title_activity_reminder">ReminderActivity</string>
+    <string name="title_activity_to_do">ToDoActivity</string>
+</resources>
