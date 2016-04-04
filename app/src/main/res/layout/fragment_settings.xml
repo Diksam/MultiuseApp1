@@ -1,0 +1,81 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.hi.multiuseapp1.common.SettingsFragment">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:weightSum="6">
+        <android.support.v7.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:layout_margin="5dp"
+            android:elevation="4dp">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:text="choose_default_app"
+        android:textSize="30sp"
+        android:textColor="@color/cardview_dark_background"
+        android:background="@color/md_cyan_600"/>
+        </android.support.v7.widget.CardView>
+
+        <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="5"
+        android:elevation="2dp"
+            android:layout_margin="10dp">
+            <RadioGroup
+                android:id="@+id/radioGroup"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:layout_margin="5dp"
+                android:background="@color/md_cyan_100">
+                <RadioButton
+                    android:id="@+id/radioNotepad"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="25sp"
+                    android:layout_margin="10dp"
+                    android:text="Notepad"/>
+        <RadioButton
+            android:id="@+id/radioTodo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="25sp"
+            android:layout_margin="10dp"
+            android:text="Todo List"/>
+        <RadioButton
+        android:id="@+id/radioDrawing"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+        android:text="Drawing"
+        android:textSize="25sp"/>
+        <RadioButton
+            android:id="@+id/radioReminder"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Reminder"
+            android:layout_margin="10dp"
+            android:textSize="25sp"/>
+        <RadioButton
+            android:id="@+id/radioMovie"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:text="Movie List"
+            android:textSize="25sp"/>
+        </RadioGroup>
+        </android.support.v7.widget.CardView>
+    </LinearLayout>
+
+</FrameLayout>
+

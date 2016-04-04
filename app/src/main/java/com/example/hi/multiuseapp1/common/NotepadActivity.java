@@ -1,6 +1,6 @@
 package com.example.hi.multiuseapp1.common;
 
-import android.accounts.Account;
+
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -8,6 +8,9 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -29,7 +32,7 @@ import com.mikepenz.materialdrawer.model.interfaces.Nameable;
 
 
 public class NotepadActivity extends AppCompatActivity {
-    private Drawer mDrawer=null;
+    private Drawer mDrawer = null;
     private Toolbar mToolbar;
     private int DEFAULT_APP;
     private Activity mActivity;
@@ -41,12 +44,12 @@ public class NotepadActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_notepad);
-       mActivity=this;
-        mToolbar=(Toolbar)findViewById(R.id.toolbar);
+        mActivity = this;
+        mToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
-        mSharedPreferences=mActivity.getSharedPreferences(Constant.PREFERENCE_NAME, Context.MODE_PRIVATE);
-        mEditor=mSharedPreferences.edit();
-        DEFAULT_APP=mSharedPreferences.getInt(Constant.DEFAULT_APP,0);
+        mSharedPreferences = mActivity.getSharedPreferences(Constant.PREFERENCE_NAME, Context.MODE_PRIVATE);
+        mEditor = mSharedPreferences.edit();
+        DEFAULT_APP = mSharedPreferences.getInt(Constant.DEFAULT_APP, 0);
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -55,19 +58,19 @@ public class NotepadActivity extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });
-        AccountHeader accountHeader=new AccountHeaderBuilder()
+        AccountHeader accountHeader = new AccountHeaderBuilder()
                 .withActivity(this)
                 .withHeaderBackground(R.drawable.drawerback)
                 .build();
-        mDrawer=new DrawerBuilder()
+        mDrawer = new DrawerBuilder()
                 .withAccountHeader(accountHeader)
                 .withActivity(this)
                 .withToolbar(mToolbar)
                 .withActionBarDrawerToggle(true)
                 .addDrawerItems(
                         new PrimaryDrawerItem().withName("Notepad")
-                        .withIcon(FontAwesome.Icon.faw_file_text)
-                        .withIdentifier(1),
+                                .withIcon(FontAwesome.Icon.faw_file_text)
+                                .withIdentifier(1),
                         new PrimaryDrawerItem().withName("Todo List")
                                 .withIcon(FontAwesome.Icon.faw_file)
                                 .withIdentifier(2),
@@ -83,23 +86,23 @@ public class NotepadActivity extends AppCompatActivity {
                         new PrimaryDrawerItem().withName("Setting")
                                 .withIcon(FontAwesome.Icon.faw_cog)
                                 .withIdentifier(6)
-                        )
+                )
                 .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
                     @Override
                     public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
-                        if (drawerItem!=null&&drawerItem instanceof Nameable){
-                            String name=((Nameable)drawerItem).getName().getText(NotepadActivity.this);
+                        if (drawerItem != null && drawerItem instanceof Nameable) {
+                            String name = ((Nameable) drawerItem).getName().getText(NotepadActivity.this);
                             mToolbar.setTitle(name);
 
-                    }
-                        if(drawerItem!=null){
-                            int idOfItemClicked=(int) drawerItem.getIdentifier();
+                        }
+                        if (drawerItem != null) {
+                            int idOfItemClicked = (int) drawerItem.getIdentifier();
                             onTouchDrawer(idOfItemClicked);
 
-                }
+                        }
                         return true;
 
-    }
+                    }
                 })
                 .withOnDrawerListener(new Drawer.OnDrawerListener() {
                     @Override
@@ -120,16 +123,16 @@ public class NotepadActivity extends AppCompatActivity {
                 .withFireOnInitialOnClick(true)
                 .withSavedInstance(savedInstanceState)
                 .build();
-        if(DEFAULT_APP>0){
+        if (DEFAULT_APP > 0) {
             onTouchDrawer(DEFAULT_APP);
-    }
-        else {
+        } else {
             onTouchDrawer(Constant.NOTEPAD);
         }
 
     }
-    private void onTouchDrawer(int position){
-        switch (position){
+
+    private void onTouchDrawer(int position) {
+        switch (position) {
             case Constant.NOTEPAD:
                 break;
             case Constant.DRAWING:
@@ -145,9 +148,22 @@ public class NotepadActivity extends AppCompatActivity {
                 startActivity(new Intent(this, ReminderActivity.class));
                 break;
             case Constant.SETTING:
+    openFragment(new SettingsFragment(),"Settings");
                 break;
 
         }
     }
+    private void openFragment(Fragment fragment,String screenTitle){
+        getSupportFragmentManager()
+                .beginTransaction()
+                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                .replace(R.id.container,fragment)
+                .addToBackStack(null)
+                .commit();
+        getSupportActionBar().setTitle(screenTitle);
+    }
+
 
 }
+
+
