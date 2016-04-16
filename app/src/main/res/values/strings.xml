@@ -26,4 +26,15 @@
     <string name="content_new">Content</string>
     <string name="date">Date</string>
     <string name="moving_handle">Moving handle</string>
+    <string name="title_is_required">Title is required</string>
+    <string name="content_is_required">Content is required</string>
+    <string name="note_updated">Note updated</string>
+    <string name="note_not_updated">note not updated</string>
+    <string name="note_List">Note List</string>
+    <string name="Notepad_List">Notepad List</string>
+    <string name="Todo_List">Todo List</string>
+    <string name="Drawing">Drawing</string>
+    <string name="Reminder">Reminder</string>
+    <string name="Movie">Movie</string>
+    <string name="Settings">Settings</string>
 </resources>

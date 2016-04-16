@@ -23,11 +23,12 @@ import com.zeus.multiuseapp.R;
 import com.zeus.multiuseapp.common.Constants;
 import com.zeus.multiuseapp.common.SettingsFragment;
 import com.zeus.multiuseapp.drawing.DrawingActivity;
+import com.zeus.multiuseapp.listener.OnStartNewFragmentListener;
 import com.zeus.multiuseapp.movie.MovieActivity;
 import com.zeus.multiuseapp.reminder.ReminderActivity;
 import com.zeus.multiuseapp.todo.ToDoActivity;
 
-public class NotepadActivity extends AppCompatActivity {
+public class NotepadActivity extends AppCompatActivity implements OnStartNewFragmentListener {
 
     private Drawer mDrawer = null;
     private Toolbar mToolbar;
@@ -66,22 +67,22 @@ public class NotepadActivity extends AppCompatActivity {
                 .withToolbar(mToolbar)
                 .withActionBarDrawerToggle(true)
                 .addDrawerItems(
-                        new PrimaryDrawerItem().withName("Notepad")
+                        new PrimaryDrawerItem().withName(R.string.Notepad_List)
                                 .withIcon(FontAwesome.Icon.faw_file_text)
                                 .withIdentifier(1),
-                        new PrimaryDrawerItem().withName("Todo List")
+                        new PrimaryDrawerItem().withName(R.string.Todo_List)
                                 .withIcon(FontAwesome.Icon.faw_list)
                                 .withIdentifier(2),
-                        new PrimaryDrawerItem().withName("Drawing")
+                        new PrimaryDrawerItem().withName(R.string.Drawing)
                                 .withIcon(FontAwesome.Icon.faw_paint_brush)
                                 .withIdentifier(3),
-                        new PrimaryDrawerItem().withName("Reminder")
+                        new PrimaryDrawerItem().withName(R.string.Reminder)
                                 .withIcon(FontAwesome.Icon.faw_clock_o)
                                 .withIdentifier(4),
-                        new PrimaryDrawerItem().withName("Movie")
+                        new PrimaryDrawerItem().withName(R.string.Movie)
                                 .withIcon(FontAwesome.Icon.faw_video_camera)
                                 .withIdentifier(5),
-                        new PrimaryDrawerItem().withName("Settings")
+                        new PrimaryDrawerItem().withName(R.string.Settings)
                                 .withIcon(FontAwesome.Icon.faw_cog)
                                 .withIdentifier(6)
                 )
@@ -129,7 +130,7 @@ public class NotepadActivity extends AppCompatActivity {
     private void onTouchDrawer(int position) {
         switch (position) {
             case Constants.NOTEPAD:
-                openFragment(new NoteListFragment(), "Notes List");
+                openFragment(new NoteListFragment(), getString(R.string.Notepad_List));
                 break;
             case Constants.DRAWING:
                 startActivity(new Intent(this, DrawingActivity.class));
@@ -144,7 +145,7 @@ public class NotepadActivity extends AppCompatActivity {
                 startActivity(new Intent(this, ReminderActivity.class));
                 break;
             case Constants.SETTINGS:
-                openFragment(new SettingsFragment(), "Settings");
+                openFragment(new SettingsFragment(), getString(R.string.Settings));
                 break;
         }
     }
@@ -157,6 +158,11 @@ public class NotepadActivity extends AppCompatActivity {
                 .addToBackStack(null)
                 .commit();
         getSupportActionBar().setTitle(screenTitle);
+    }
+
+    @Override
+    public void onStartNewFragment(Fragment fragment, String title) {
+        openFragment(fragment, title);
     }
 
    /* private void testDatabase() {
