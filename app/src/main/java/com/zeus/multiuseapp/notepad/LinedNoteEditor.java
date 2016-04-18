@@ -2,9 +2,11 @@ package com.zeus.multiuseapp.notepad;
 
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -34,6 +36,10 @@ public class LinedNoteEditor extends Fragment {
     private OnStartNewFragmentListener mCallback;
     private Notes mCurrentNote = null;
 
+    public LinedNoteEditor() {
+        // Required empty public constructor
+    }
+
     public static LinedNoteEditor newInstance(String serializedNote) {
         LinedNoteEditor fragment = new LinedNoteEditor();
         if (!serializedNote.isEmpty()) {
@@ -56,24 +62,6 @@ public class LinedNoteEditor extends Fragment {
                 }
             }
         }
-    }
-
-    private void getNote() {
-        Bundle args = getArguments();
-        if (args != null) {
-            if (args.containsKey(Constants.SERIALIZED_NOTES)) {
-                String jsonNote = args.getString(Constants.SERIALIZED_NOTES);
-                Gson gson = new Gson();
-                mCurrentNote = gson.fromJson(jsonNote, Notes.class);
-                if (mCurrentNote != null && mCurrentNote.getId() != null && mCurrentNote.getId() > 0) {
-                    InEditMode = true;
-                }
-            }
-        }
-    }
-
-    public LinedNoteEditor() {
-        // Required empty public constructor
     }
 
     @Override
@@ -113,26 +101,55 @@ public class LinedNoteEditor extends Fragment {
         switch (item.getItemId()) {
             case R.id.action_save:
                 saveNote();
-                if (InEditMode) {
-                    if (saveNote()) {
-                        Snackbar.make(mRootView, R.string.note_updated, Snackbar.LENGTH_SHORT).show();
-
-                    }
-                } else {
-                    if (saveNote()) {
-                        Snackbar.make(mRootView, R.string.note_not_updated, Snackbar.LENGTH_SHORT).show();
-                    }
-                }
+                saveNoteConfirmation();
                 mCallback.onStartNewFragment(new NoteListFragment(), getString(R.string.note_List));
                 break;
+            case R.id.action_delete:
+                if (InEditMode) {
+                    askForConfirmation();
+                } else {
+                    Snackbar.make(mRootView, R.string.save_note_before_deleting, Snackbar.LENGTH_SHORT).show();
+                }
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void saveNoteConfirmation() {
+        if (InEditMode) {
+            if (saveNote()) {
+                Snackbar.make(mRootView, R.string.note_updated, Snackbar.LENGTH_SHORT).show();
+
+            }
+        } else {
+            if (saveNote()) {
+                Snackbar.make(mRootView, R.string.note_not_updated, Snackbar.LENGTH_SHORT).show();
+            }
+        }
+    }
+
+    private void askForConfirmation() {
+        final String titleOfNote = mCurrentNote.getTitle();
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(getContext());
+        alertDialog.setTitle(getString(R.string.delete) + titleOfNote + getString(R.string.question))
+                .setMessage(getString(R.string.are_you_sure_you_want_to_delete) + titleOfNote + getString(R.string.question));
+        alertDialog.setPositiveButton(getString(R.string.yes), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                mCurrentNote.delete();
+                mCallback.onStartNewFragment(new NoteListFragment(), getString(R.string.note_list));
+            }
+        }).setNegativeButton(getString(R.string.no), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        alertDialog.show();
     }
 
     private boolean saveNote() {
         String title = mTitleEditText.getText().toString();
         String content = mContentEditText.getText().toString();
-
         if (TextUtils.isEmpty(title)) {
             mTitleEditText.setError(getString(R.string.title_is_required));
             return false;
@@ -149,7 +166,7 @@ public class LinedNoteEditor extends Fragment {
         notes.setDateModified(Calendar.getInstance().getTimeInMillis());
         notes.save();
 
-        Toast.makeText(getActivity(), "Table saved with id: " + notes.getId(), Toast.LENGTH_SHORT).show();
+        Toast.makeText(getActivity(), getString(R.string.table_saved_with_id) + notes.getId(), Toast.LENGTH_SHORT).show();
         return true;
     }
 
@@ -164,7 +181,7 @@ public class LinedNoteEditor extends Fragment {
         try {
             mCallback = (OnStartNewFragmentListener) context;
         } catch (ClassCastException e) {
-            throw new ClassCastException(context.toString() + "must implement OnStartNewFragmentListener");
+            throw new ClassCastException(context.toString() + context.getString(R.string.must_implement_OnStartNewFragmentListener));
         }
     }
 }

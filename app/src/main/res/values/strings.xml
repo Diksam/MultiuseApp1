@@ -37,4 +37,13 @@
     <string name="Reminder">Reminder</string>
     <string name="Movie">Movie</string>
     <string name="Settings">Settings</string>
+    <string name="save_note_before_deleting">Save note before deleting !</string>
+    <string name="delete">Delete\'</string>
+    <string name="question">\' ?</string>
+    <string name="are_you_sure_you_want_to_delete">Are you sure you want to delete\'</string>
+    <string name="yes">yes</string>
+    <string name="note_list">Note List</string>
+    <string name="no">No</string>
+    <string name="table_saved_with_id">"Table saved with id: "</string>
+    <string name="must_implement_OnStartNewFragmentListener">must implement OnStartNewFragmentListener</string>
 </resources>
