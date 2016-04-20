@@ -2,6 +2,11 @@ package com.zeus.multiuseapp.models;
 
 import com.orm.SugarRecord;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
+
 /**
  * Created by Zeus on 3/21/2016.
  */
@@ -13,6 +18,18 @@ public class TodoItem extends SugarRecord {
     private long dateModified;
 
     public TodoItem() {
+
+    }
+
+    public String getModifiedDate() {
+        Calendar calendar = new GregorianCalendar().getInstance();
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MM dd, yyyy - hh:mm a");
+        simpleDateFormat.setTimeZone(calendar.getTimeZone());
+        calendar.setTimeInMillis(this.getDateModified());
+        Date modifiedDate = calendar.getTime();
+        String displayDate = simpleDateFormat.format(modifiedDate);
+
+        return displayDate;
 
     }
 
