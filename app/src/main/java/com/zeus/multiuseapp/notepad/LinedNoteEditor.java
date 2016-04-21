@@ -121,7 +121,7 @@ public class LinedNoteEditor extends Fragment {
 
             }
         } else {
-            if (saveNote()) {
+            if (!saveNote()) {
                 Snackbar.make(mRootView, R.string.note_not_updated, Snackbar.LENGTH_SHORT).show();
             }
         }
@@ -135,6 +135,8 @@ public class LinedNoteEditor extends Fragment {
         alertDialog.setPositiveButton(getString(R.string.yes), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
+                String title = mCurrentNote.getTitle();
+                Snackbar.make(mRootView, "Note'" + title + "' is deleted", Snackbar.LENGTH_SHORT).show();
                 mCurrentNote.delete();
                 mCallback.onStartNewFragment(new NoteListFragment(), getString(R.string.note_list));
             }
@@ -165,6 +167,7 @@ public class LinedNoteEditor extends Fragment {
         notes.setDateCreated(Calendar.getInstance().getTimeInMillis());
         notes.setDateModified(Calendar.getInstance().getTimeInMillis());
         notes.save();
+        Snackbar.make(mRootView, "Note'" + notes.getTitle() + "' is saved", Snackbar.LENGTH_LONG).show();
 
         Toast.makeText(getActivity(), getString(R.string.table_saved_with_id) + notes.getId(), Toast.LENGTH_SHORT).show();
         return true;
