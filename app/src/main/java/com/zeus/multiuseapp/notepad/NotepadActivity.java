@@ -46,8 +46,6 @@ public class NotepadActivity extends AppCompatActivity implements OnStartNewFrag
       /*  SQLiteDemo database = new SQLiteDemo(this);
         database.getWritableDatabase();*/
 
-        // testDatabase();
-
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
 
@@ -67,22 +65,22 @@ public class NotepadActivity extends AppCompatActivity implements OnStartNewFrag
                 .withToolbar(mToolbar)
                 .withActionBarDrawerToggle(true)
                 .addDrawerItems(
-                        new PrimaryDrawerItem().withName(R.string.Notepad_List)
+                        new PrimaryDrawerItem().withName(R.string.note_list)
                                 .withIcon(FontAwesome.Icon.faw_file_text)
                                 .withIdentifier(1),
-                        new PrimaryDrawerItem().withName(R.string.Todo_List)
+                        new PrimaryDrawerItem().withName(R.string.todo_list)
                                 .withIcon(FontAwesome.Icon.faw_list)
                                 .withIdentifier(2),
-                        new PrimaryDrawerItem().withName(R.string.Drawing)
+                        new PrimaryDrawerItem().withName(R.string.drawing)
                                 .withIcon(FontAwesome.Icon.faw_paint_brush)
                                 .withIdentifier(3),
-                        new PrimaryDrawerItem().withName(R.string.Reminder)
+                        new PrimaryDrawerItem().withName(R.string.reminder)
                                 .withIcon(FontAwesome.Icon.faw_clock_o)
                                 .withIdentifier(4),
-                        new PrimaryDrawerItem().withName(R.string.Movie)
+                        new PrimaryDrawerItem().withName(R.string.movie_list)
                                 .withIcon(FontAwesome.Icon.faw_video_camera)
                                 .withIdentifier(5),
-                        new PrimaryDrawerItem().withName(R.string.Settings)
+                        new PrimaryDrawerItem().withName(R.string.settings)
                                 .withIcon(FontAwesome.Icon.faw_cog)
                                 .withIdentifier(6)
                 )
@@ -130,7 +128,7 @@ public class NotepadActivity extends AppCompatActivity implements OnStartNewFrag
     private void onTouchDrawer(int position) {
         switch (position) {
             case Constants.NOTEPAD:
-                openFragment(new NoteListFragment(), getString(R.string.Notepad_List));
+                openFragment(new NoteListFragment(), getString(R.string.note_list));
                 break;
             case Constants.DRAWING:
                 startActivity(new Intent(this, DrawingActivity.class));
@@ -145,7 +143,7 @@ public class NotepadActivity extends AppCompatActivity implements OnStartNewFrag
                 startActivity(new Intent(this, ReminderActivity.class));
                 break;
             case Constants.SETTINGS:
-                openFragment(new SettingsFragment(), getString(R.string.Settings));
+                openFragment(new SettingsFragment(), getString(R.string.settings));
                 break;
         }
     }
@@ -157,7 +155,9 @@ public class NotepadActivity extends AppCompatActivity implements OnStartNewFrag
                 .replace(R.id.container, fragment)
                 .addToBackStack(null)
                 .commit();
-        getSupportActionBar().setTitle(screenTitle);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setTitle(screenTitle);
+        }
     }
 
     @Override
@@ -165,17 +165,25 @@ public class NotepadActivity extends AppCompatActivity implements OnStartNewFrag
         openFragment(fragment, title);
     }
 
-   /* private void testDatabase() {
-        Notes note1 = new Notes();
-        note1.setTitle("This is the test for database");
-        note1.setContent("Hello !!");
-
-        Calendar calendar = GregorianCalendar.getInstance();
-        note1.setDateCreated(calendar.getTimeInMillis());
-        note1.setDateModified(calendar.getTimeInMillis());
-        note1.save();
-
-        long id = note1.getId();
+    /*@Override
+    public void onBackPressed() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getApplicationContext());
+        builder.setTitle(getString(R.string.exit)).setMessage(getString(R.string.exit_confirmation));
+        builder.setPositiveButton(getString(R.string.yes), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                    finishAffinity();
+                } else {
+                    finish();
+                }
+            }
+        }).setNegativeButton(getString(R.string.no), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        super.onBackPressed();
     }*/
-
 }

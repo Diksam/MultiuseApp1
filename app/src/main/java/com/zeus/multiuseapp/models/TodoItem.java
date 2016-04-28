@@ -18,11 +18,11 @@ public class TodoItem extends SugarRecord {
     private long dateModified;
 
     public TodoItem() {
-
     }
 
-    public String getModifiedDate() {
-        Calendar calendar = new GregorianCalendar().getInstance();
+    public String getReadableModifiedDate() {
+        new GregorianCalendar();
+        Calendar calendar = Calendar.getInstance();
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MM dd, yyyy - hh:mm a");
         simpleDateFormat.setTimeZone(calendar.getTimeZone());
         calendar.setTimeInMillis(this.getDateModified());
@@ -30,7 +30,6 @@ public class TodoItem extends SugarRecord {
         String displayDate = simpleDateFormat.format(modifiedDate);
 
         return displayDate;
-
     }
 
     public String getTitle() {

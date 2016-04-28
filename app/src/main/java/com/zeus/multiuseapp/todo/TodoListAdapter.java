@@ -17,28 +17,32 @@ import com.zeus.multiuseapp.R;
 import com.zeus.multiuseapp.common.ItemTouchHelperAdapter;
 import com.zeus.multiuseapp.common.ItemTouchHelperViewHolder;
 import com.zeus.multiuseapp.listener.OnStartDragListener;
+import com.zeus.multiuseapp.listener.OnToDoListItemChangeListener;
 import com.zeus.multiuseapp.models.TodoItem;
 
 import java.util.Collections;
 import java.util.List;
 
 /**
- * Created by hi on 4/20/2016.
+ * Created by Zeus on 4/18/2016.
  */
-public class TodoListAdapter extends RecyclerView.Adapter<TodoListAdapter.ViewHolder> implements ItemTouchHelperAdapter {
+public class TodoListAdapter extends RecyclerView.Adapter<TodoListAdapter.ViewHolder>
+        implements ItemTouchHelperAdapter {
+
     private List<TodoItem> mTodoItems;
+
     private Context mContext;
+
     private OnStartDragListener mDragListener;
 
-    public TodoListAdapter(List<TodoItem> items, Context context) {
-        mTodoItems = items;
-        mContext = context;
-    }
+    private OnToDoListItemChangeListener mToDoListChanged;
 
-    public TodoListAdapter(List<TodoItem> items, Context context, OnStartDragListener dragListener) {
+    public TodoListAdapter(List<TodoItem> items, Context context, OnStartDragListener dragListener,
+                           OnToDoListItemChangeListener onToDoListItemChangeListener) {
         mTodoItems = items;
         mContext = context;
         mDragListener = dragListener;
+        mToDoListChanged = onToDoListItemChangeListener;
     }
 
     @Override
@@ -56,15 +60,18 @@ public class TodoListAdapter extends RecyclerView.Adapter<TodoListAdapter.ViewHo
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
+
         final TodoItem selectedTodo = mTodoItems.get(position);
+
         holder.mToDoCheckbox.setText(selectedTodo.getTitle());
+
         if (selectedTodo.isChecked()) {
             holder.mToDoDate.setVisibility(View.VISIBLE);
-            holder.mToDoDate.setText(selectedTodo.getModifiedDate());
+            holder.mToDoDate.setText(selectedTodo.getReadableModifiedDate());
             holder.mToDoCheckbox.setChecked(true);
             holder.mToDoCheckbox.setPaintFlags(holder.mToDoCheckbox.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
-
         }
+
         holder.mHandleView.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
@@ -74,23 +81,21 @@ public class TodoListAdapter extends RecyclerView.Adapter<TodoListAdapter.ViewHo
                 return false;
             }
         });
-
     }
 
     @Override
     public void OnItemMove(int fromPosition, int toPosition) {
         Collections.swap(mTodoItems, fromPosition, toPosition);
+        mToDoListChanged.onTodoListItemChanged(mTodoItems);
         notifyItemMoved(fromPosition, toPosition);
-
     }
 
     @Override
     public void OnItemDismissed(int position) {
-
     }
 
-
     public static class ViewHolder extends RecyclerView.ViewHolder implements ItemTouchHelperViewHolder {
+
         public TextView mToDoDate;
         public CheckBox mToDoCheckbox;
         private ImageView mHandleView;
@@ -100,20 +105,16 @@ public class TodoListAdapter extends RecyclerView.Adapter<TodoListAdapter.ViewHo
             mToDoDate = (TextView) itemView.findViewById(R.id.todoListCreated);
             mToDoCheckbox = (CheckBox) itemView.findViewById(R.id.todoListCheckbox);
             mHandleView = (ImageView) itemView.findViewById(R.id.tHandle);
-
-
         }
 
         @Override
         public void OnItemSelected() {
-            itemView.setBackgroundColor(Color.rgb(197, 199, 233));
-
+            itemView.setBackgroundColor(Color.rgb(108, 202, 242));
         }
 
         @Override
         public void OnItemClear() {
             itemView.setBackgroundColor(Color.rgb(179, 229, 252));
-
         }
     }
 }

@@ -10,17 +10,22 @@ import com.zeus.multiuseapp.R;
 
 public class ToDoActivity extends AppCompatActivity {
 
+    private Toolbar mToolbar;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_to_do);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        mToolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(mToolbar);
+
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
         }
-        openFragment(new ToDoListFragment(), "List of Todo");
 
+        if (savedInstanceState == null) {
+            openFragment(new ToDoListFragment(), "List of Todo");
+        }
     }
 
     private void openFragment(Fragment fragment, String screenTitle) {
@@ -34,5 +39,4 @@ public class ToDoActivity extends AppCompatActivity {
             getSupportActionBar().setTitle(screenTitle);
         }
     }
-
 }
